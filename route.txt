@@ -37,3 +37,5 @@ delete => clients/{id}/users/{user_id} 200
 
 NotFound => 404
 Denied => 401
+
+curl -X POST -H "Content-Type: application/json" http://127.0.0.1:3306/api/login_check -d '{"email":"user0@email.com","password":"password"}'
