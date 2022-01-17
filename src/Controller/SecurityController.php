@@ -15,5 +15,6 @@ class SecurityController extends AbstractController {
     {
       return $this->json([]);
     }
-}
+
+  }
 ?>

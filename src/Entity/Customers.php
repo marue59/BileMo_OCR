@@ -35,7 +35,7 @@ class Customers implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Column(type="json")
      */
-    private $role = [];
+    private $roles = [];
 
     /** 
      * @var string The hashed password
@@ -174,5 +174,10 @@ class Customers implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         return $this;
+    }
+
+    public function getUsername() 
+    { 
+      return $this->email; 
     }
 }
