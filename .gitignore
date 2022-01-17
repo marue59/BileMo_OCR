@@ -19,3 +19,7 @@
 .phpunit.result.cache
 ###< phpunit/phpunit ###
 /.env
+###> lexik/jwt-authentication-bundle ###
+/config/jwt/*.pem
+###< lexik/jwt-authentication-bundle ###
+/.route.txt

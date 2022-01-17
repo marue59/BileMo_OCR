@@ -1,0 +1,41 @@
+/products => GET
+
+/products/{id} => GET
+
+/clients/{id}/users => [GET|POST]
+
+/clients/{id}/users/{user_id} => [GET|DELETE]
+
+https://symfony.com/bundles/SensioFrameworkExtraBundle/current/annotations/converters.html
+
+ProductController 
+
+get => /products 200
+
+-----
+@Entity("product", expr="repository.find(id)")
+details => /products/{id} 200
+detail(Product $product)
+/prducts/1
+-----
+
+CustomerController
+
+
+get => /clients/{id}/users 200
+
+
+post => /clients/{id}/users 200 
+
+details => clients/{id}/users/{user_id} 200
+@Entity("user", expr="repository.find(user_id)")
+@Entity("customer", expr="repository.find(id)")
+detail(Customers $customer, User $user)
+
+delete => clients/{id}/users/{user_id} 200
+
+
+NotFound => 404
+Denied => 401
+
+curl -X POST -H "Content-Type: application/json" http://127.0.0.1:3306/api/login_check -d '{"email":"user0@email.com","password":"password"}'
