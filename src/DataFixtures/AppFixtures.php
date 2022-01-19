@@ -25,47 +25,53 @@ class AppFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
       
-        $faker = Factory::create();
+        $faker = Factory::create('fr_FR');
 
         for ($i = 0; $i < 5; $i++) {
-            $customers = new Customers();
-            $customers->setFullname($faker->name());
-            $customers->setPassword($this->encoder->hashPassword($customers, 'password'));
-            $customers->setEmail("customers$i@email.com");
+            $customer = new Customers();
+            $customer->setFullname($faker->name());
+            $customer->setPassword($this->encoder->hashPassword($customer, 'password'));
+            $customer->setEmail("customers$i@email.com");
+            $customer->setRoles(['ROLE_USER']);
 
-            $manager->persist($customers);
+            $manager->persist($customer);
         }
+        $manager->flush();
+
+        $customers = $manager->getRepository(Customers::class)->findAll();
+
+        for ($i = 0; $i < 15; $i++) {
+            $customer = $faker->randomElement($customers);
+
+            $user = new Users();
+            $user->setName($faker->name());
+            $user->setEmail("users$i@email.com");
+            
+            $customer->addUser($user);
+
+            $manager->persist($user);
+        }
+        $manager->flush();
 
         $users = $manager->getRepository(Users::class)->findAll();
         $colors = ["blue", "red", "gold"];
 
         for ($i = 0; $i < 15; $i++) {
-            $products = new Products();
-            $products->setBrand('marques'.$i);
-            $products->setModel('models'.$i);
-            $products->setColor($faker->randomElement($colors));
-            $products->setCapacity($faker->numberBetween(1, 20));
-            $products->setPrice($faker->numberBetween(50, 500));
-            $products->setDescription($faker->text());
-            $products->getUsers($faker->randomElement($users));
+            $user = $faker->randomElement($users);
 
-            $manager->persist($products);
+            $product = new Products();
+            $product->setBrand('marques'.$i);
+            $product->setModel('models'.$i);
+            $product->setColor($faker->randomElement($colors));
+            $product->setCapacity($faker->numberBetween(1, 20));
+            $product->setPrice($faker->numberBetween(50, 500));
+            $product->setDescription($faker->text());
+
+            $user->addProduct($product);
+
+            $manager->persist($product);
         }
-
-        $products = $manager->getRepository(Products::class)->findAll();
-        $customers = $manager->getRepository(Customers::class)->findAll();
-
-
-        for ($i = 0; $i < 15; $i++) {
-            $users = new Users();
-            $users->setName($faker->name());
-            $users->getProducts($faker->randomElement($products));
-            $users->getCustomers($faker->randomElement($customers));
-            $users->setEmail("users$i@email.com");
-
-            $manager->persist($users);
-        }
-
         $manager->flush();
+       
     }
 }
