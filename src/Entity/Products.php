@@ -2,11 +2,12 @@
 
 namespace App\Entity;
 
-use App\Repository\ProductsRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use App\Entity\Users;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\ProductsRepository;
+use Doctrine\Common\Collections\Collection;
 use JMS\Serializer\Annotation as Serializer;
+use Doctrine\Common\Collections\ArrayCollection;
 
 
 /**

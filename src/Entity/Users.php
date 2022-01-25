@@ -2,10 +2,13 @@
 
 namespace App\Entity;
 
+use App\Entity\Products;
+use App\Entity\Customers;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UsersRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * @ORM\Entity(repositoryClass=UsersRepository::class)
@@ -20,11 +23,13 @@ class Users
     private $id;
 
     /**
+     * @Serializer\Groups({"detailUser"})
      * @ORM\Column(type="string", length=255)
      */
     private $name;
 
     /**
+     * @Serializer\Groups({"detailUser"})
      * @ORM\Column(type="string", length=255)
      */
     private $email;

@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Entity\Users;
+use JMS\Serializer\Annotation as Serializer;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\CustomersRepository;
 use Doctrine\Common\Collections\Collection;
@@ -15,7 +16,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
  */
 class Customers implements UserInterface, PasswordAuthenticatedUserInterface
 {
-    /**
+    /** 
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -23,6 +24,7 @@ class Customers implements UserInterface, PasswordAuthenticatedUserInterface
     private $id;
 
     /**
+     * @Serializer\Groups({"detailUser"})
      * @ORM\Column(type="string", length=255)
      */
     private $fullname;
@@ -44,6 +46,7 @@ class Customers implements UserInterface, PasswordAuthenticatedUserInterface
     private $password;
 
     /**
+     * @Serializer\Groups({"detailUser"})
      * @ORM\OneToMany(targetEntity=Users::class, mappedBy="customers")
      */
     private $users;
