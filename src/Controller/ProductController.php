@@ -16,6 +16,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class ProductController extends AbstractController {
     
   /**
+   * consulter la liste des produits BileMo ;
    * @Route("/api/products")
    * @Method({"GET"})
    */
@@ -24,7 +25,7 @@ class ProductController extends AbstractController {
       $query = $productRepository->createQueryBuilder('p')->getQuery();
       $data = $pagination->create($query);
 
-      $data = $serializer->serialize($data, 'json', SerializationContext::create()->setGroups(array('list')));
+      $data = $serializer->serialize($data, 'json', SerializationContext::create()->setGroups(array('listProduct')));
       
       $response = new Response($data);
       $response->headers->set('Content-Type', 'application/json');
@@ -34,6 +35,7 @@ class ProductController extends AbstractController {
   }
 
    /**
+   * consulter les détails d’un produit BileMo ;
    * @Route("/api/products/{id}")
    * @Method({"GET"})
    */
@@ -46,8 +48,6 @@ class ProductController extends AbstractController {
 
         return $response;
     }
-
-
 }
 
 ?>

@@ -16,6 +16,7 @@ use JMS\Serializer\Annotation as Serializer;
 class Users
 {
     /**
+     * @Serializer\Groups({"listUser"})
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -23,18 +24,19 @@ class Users
     private $id;
 
     /**
-     * @Serializer\Groups({"detailUser"})
+     * @Serializer\Groups({"listUser"})
      * @ORM\Column(type="string", length=255)
      */
     private $name;
 
     /**
-     * @Serializer\Groups({"detailUser"})
+     * @Serializer\Groups({"listUser"})
      * @ORM\Column(type="string", length=255)
      */
     private $email;
 
     /**
+     * @Serializer\Groups({"listUser"})
      * @ORM\ManyToOne(targetEntity=Customers::class, inversedBy="users")
      */
     private $customers;

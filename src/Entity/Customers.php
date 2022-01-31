@@ -24,17 +24,19 @@ class Customers implements UserInterface, PasswordAuthenticatedUserInterface
     private $id;
 
     /**
-     * @Serializer\Groups({"detailUser"})
+     * @Serializer\Groups({"listUser"})
      * @ORM\Column(type="string", length=255)
      */
     private $fullname;
 
     /**
+     * 
      * @ORM\Column(type="string", length=255)
      */
     private $email;
 
     /**
+     * 
      * @ORM\Column(type="json")
      */
     private $roles = [];
@@ -46,7 +48,6 @@ class Customers implements UserInterface, PasswordAuthenticatedUserInterface
     private $password;
 
     /**
-     * @Serializer\Groups({"detailUser"})
      * @ORM\OneToMany(targetEntity=Users::class, mappedBy="customers")
      */
     private $users;

@@ -16,7 +16,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 class Products
 {
     /**
-     * @Serializer\Groups({"list"})
+     * @Serializer\Groups({"listProduct"})
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -24,12 +24,13 @@ class Products
     private $id;
 
     /**
-     *
+     * @Serializer\Groups({"listProduct"})
      * @ORM\Column(type="string", length=255)
      */
     private $brand;
 
-    /**
+    /** 
+     * @Serializer\Groups({"listProduct"})
      * @ORM\Column(type="string", length=255)
      */
     private $model;
@@ -50,6 +51,7 @@ class Products
     private $price;
 
     /**
+     *  @Serializer\Groups({"listProduct"})
      * @ORM\Column(type="text")
      */
     private $description;
