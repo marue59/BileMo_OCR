@@ -77,7 +77,6 @@ class UserController extends AbstractController {
      * @param SerializerInterface $serializer
      * @param ValidatorInterface $validator
      * @return JsonResponse
-     * @throws \Exception
      */
     public function create(Request $request, 
     EntityManagerInterface $em, 

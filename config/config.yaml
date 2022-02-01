@@ -8,3 +8,5 @@ fos_rest:
       media_type:
         enabled: true
         regex: '/(v|version)=(?P<version>[0-9\.]+)/'
+
+nelmio_api_doc: ~
