@@ -2,21 +2,57 @@
 
 namespace App\Entity;
 
+
 use App\Entity\Products;
 use App\Entity\Customers;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UsersRepository;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation as Serializer;
+use Doctrine\Common\Collections\ArrayCollection;
+use Hateoas\Configuration\Annotation as Hateoas;
 
 /**
  * @ORM\Entity(repositoryClass=UsersRepository::class)
+ * @Hateoas\Relation(
+ *          "show",
+ *          href = @Hateoas\Route(
+ *          "api_user_show",
+ *          parameters = {"id" = "expr(object.getId())" },
+ *          absolute = true,
+ * ))
+ * @Hateoas\Relation(
+ *          "self",
+ *          href = @Hateoas\Route(
+ *          "api_user_show_id",
+ *          parameters = {"user_id" = "expr(object.getId())" },
+ *          absolute = true,
+ * ))
+ * 
+ * @Hateoas\Relation(
+ *     "customers",
+ *     embedded = @Hateoas\Embedded("expr(object.getCustomers())"
+ * ))
+ * 
+ * @Hateoas\Relation(
+ *          "create",
+ *          href = @Hateoas\Route(
+ *          "api_user_create",
+ *          absolute = true
+ * ))
+ * 
+ * @Hateoas\Relation( 
+ *          "delete", 
+*           href = @Hateoas\Route( 
+ *          "delete", 
+ *          parameters = { "id" = "expr(object.getId())" }, 
+ *          absolute = true         
+ * )) 
  */
 class Users
 {
     /**
-     * @Serializer\Groups({"listUser"})
+     * @Serializer\Groups({"listUser", "create"})
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -24,13 +60,13 @@ class Users
     private $id;
 
     /**
-     * @Serializer\Groups({"listUser"})
+     * @Serializer\Groups({"listUser", "create"})
      * @ORM\Column(type="string", length=255)
      */
     private $name;
 
     /**
-     * @Serializer\Groups({"listUser"})
+     * @Serializer\Groups({"listUser", "create"})
      * @ORM\Column(type="string", length=255)
      */
     private $email;

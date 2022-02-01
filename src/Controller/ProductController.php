@@ -17,8 +17,7 @@ class ProductController extends AbstractController {
     
   /**
    * consulter la liste des produits BileMo ;
-   * @Route("/api/products")
-   * @Method({"GET"})
+   * @Route("/api/products",  name="product_show", methods={"GET"})
    */
   public function getProducts(ProductsRepository $productRepository, Pagination $pagination, SerializerInterface $serializer )
   {
@@ -36,8 +35,7 @@ class ProductController extends AbstractController {
 
    /**
    * consulter les détails d’un produit BileMo ;
-   * @Route("/api/products/{id}")
-   * @Method({"GET"})
+   * @Route("/api/products/{id}", name="list", methods={"GET"})
    */
     public function getProductId(Products $product, SerializerInterface $serializer): Response
     {

@@ -10,9 +10,16 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Hateoas\Configuration\Annotation as Hateoas;
 
 /**
  * @ORM\Entity(repositoryClass=CustomersRepository::class)
+ * @Hateoas\Relation(
+ *     name = "api_user_show",
+ *     embedded = @Hateoas\Embedded(
+ *         "expr(object.getUsers())",
+ *     )
+ * )
  */
 class Customers implements UserInterface, PasswordAuthenticatedUserInterface
 {

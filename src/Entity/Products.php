@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Hateoas\Configuration\Annotation as Hateoas;
 use App\Entity\Users;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\ProductsRepository;
@@ -12,6 +13,15 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity(repositoryClass=ProductsRepository::class)
+ * 
+ * @Hateoas\Relation(
+ *          "self",
+ *          href = @Hateoas\Route(
+ *          "product_show",
+ *          parameters = {"id" = "expr(object.getId())" },
+ *          absolute = true
+ * ))
+ *
  */
 class Products
 {
