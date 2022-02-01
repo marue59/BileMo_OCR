@@ -11,6 +11,7 @@ use Doctrine\Common\Collections\Collection;
 use JMS\Serializer\Annotation as Serializer;
 use Doctrine\Common\Collections\ArrayCollection;
 use Hateoas\Configuration\Annotation as Hateoas;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=UsersRepository::class)
@@ -30,8 +31,8 @@ use Hateoas\Configuration\Annotation as Hateoas;
  * ))
  * 
  * @Hateoas\Relation(
- *     "customers",
- *     embedded = @Hateoas\Embedded("expr(object.getCustomers())"
+ *          "customers",
+ *          embedded = @Hateoas\Embedded("expr(object.getCustomers())"
  * ))
  * 
  * @Hateoas\Relation(
@@ -53,6 +54,7 @@ class Users
 {
     /**
      * @Serializer\Groups({"listUser", "create"})
+     * @Serializer\Since("1.0")
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -61,24 +63,31 @@ class Users
 
     /**
      * @Serializer\Groups({"listUser", "create"})
+     * @Serializer\Since("1.0")
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(min = 3, max = 25
+     * )
      */
     private $name;
 
     /**
      * @Serializer\Groups({"listUser", "create"})
+     * @Serializer\Since("1.0")
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
      */
     private $email;
 
     /**
      * @Serializer\Groups({"listUser"})
+     * @Serializer\Since("1.0")
      * @ORM\ManyToOne(targetEntity=Customers::class, inversedBy="users")
      */
     private $customers;
 
     /**
      * @ORM\ManyToMany(targetEntity=Products::class, mappedBy="users")
+     * @Serializer\Since("1.0")
      */
     private $products;
 

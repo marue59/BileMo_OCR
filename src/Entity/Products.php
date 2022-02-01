@@ -9,6 +9,7 @@ use App\Repository\ProductsRepository;
 use Doctrine\Common\Collections\Collection;
 use JMS\Serializer\Annotation as Serializer;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
 
 
 /**
@@ -30,44 +31,58 @@ class Products
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Serializer\Since("1.0")
      */
     private $id;
 
     /**
      * @Serializer\Groups({"listProduct"})
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
+     * @Serializer\Since("1.0")
      */
     private $brand;
 
     /** 
      * @Serializer\Groups({"listProduct"})
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
+     * @Serializer\Since("1.0")
      */
     private $model;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
+     * @Serializer\Since("1.0")
      */
     private $color;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
+     * @Serializer\Since("1.0")
      */
     private $capacity;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
+     * @Serializer\Since("1.0")
      */
     private $price;
 
     /**
      *  @Serializer\Groups({"listProduct"})
      * @ORM\Column(type="text")
+     * @Assert\NotBlank
+     * @Serializer\Since("1.0")
      */
     private $description;
 
     /**
      * @ORM\ManyToMany(targetEntity=Users::class, inversedBy="products")
+     * @Serializer\Since("1.0")
      */
     private $users;
 

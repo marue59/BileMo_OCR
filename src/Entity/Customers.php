@@ -11,6 +11,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Hateoas\Configuration\Annotation as Hateoas;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=CustomersRepository::class)
@@ -27,35 +28,43 @@ class Customers implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Serializer\Since("1.0")
      */
     private $id;
 
     /**
      * @Serializer\Groups({"listUser"})
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
+     * @Serializer\Since("1.0")
      */
     private $fullname;
 
     /**
      * 
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
+     * @Serializer\Since("1.0")
      */
     private $email;
 
     /**
      * 
      * @ORM\Column(type="json")
+     * @Serializer\Since("1.0")
      */
     private $roles = [];
 
     /** 
      * @var string The hashed password
      * @ORM\Column(type="string", length=255)
+     * @Serializer\Since("1.0")
      */
     private $password;
 
     /**
      * @ORM\OneToMany(targetEntity=Users::class, mappedBy="customers")
+     * @Serializer\Since("1.0")
      */
     private $users;
 
