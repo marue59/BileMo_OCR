@@ -6,10 +6,6 @@ framework:
     # See https://symfony.com/doc/current/routing.html#generating-urls-in-commands
     #default_uri: http://localhost
 
-NelmioApiDocBundle:
-  resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
-  prefix: /api/doc
-
 when@prod:
   framework:
     router:

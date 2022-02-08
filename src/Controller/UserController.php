@@ -21,19 +21,39 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use OpenApi\Annotations as OA;
+use Nelmio\ApiDocBundle\Annotation\Security as OASecurity;
 
+/**
+ * Class UserController
+ *
+ * @package App\Controller
+ * @OASecurity(name="Bearer")
+ * @OA\Tag(name="User")
+ */
 class UserController extends AbstractController {
     
-    /**
-     * @Route("/api/users")
-     */
-    public function getUsers()
-    {
-      return $this->json([]);
-    }
-
-  /** liste des users inscrits liés à un customer
+  /** 
+   * Users list
+   * 
    * @Route("/api/customers/{id}/users", name="api_user_show", methods={"GET"})
+   * 
+   * @OA\Get(
+   *      path="/api/customers/{id}/users",
+   *      description="Consulter la liste des Users"
+   * )
+   *    @OA\Response(
+   *        response=200, description="Returns users list from customers",
+   *        @Model(type=Users::class, groups={"listUser"}))
+   *  ))
+   *    @OA\Response(
+   *        response=401, description="UNAUTHORIZED - JWT Token not found | Expired JWT Token | Invalid JWT Token" 
+   * )
+   *    @OA\Response(
+   *        response=404, description="Page Not found" 
+   * )
+   * 
    */
   public function getUsersCustomer(UsersRepository $userRepository, 
   Pagination $pagination, 
@@ -50,13 +70,30 @@ class UserController extends AbstractController {
       return $response;
   }
 
-    /**
-     * consulter le détail d’un user inscrit lié à un customer 
-     * @Route("/api/customers/{id}/users/{user_id}", name="api_user_show_id" , methods={"GET"})
-     * @Entity("user", expr="repository.find(user_id)")
-     * @Entity("customer", expr="repository.find(id)")
-     */
-    public function getUserCustomerId(Users $user, Customers $customer, 
+   /**
+   * User detail
+   * 
+   * @Route("/api/customers/{id}/users/{user_id}", name="api_user_show_id" , methods={"GET"})
+   * 
+   * @OA\Get(
+   *      path="/api/customers/{id}/users/{user_id}",
+   *      description="Consulter le détail d’un user inscrit lié à un customer "
+   * )
+   *    @OA\Response(
+   *        response=200, description="Returns users detail from customers",
+   *        @Model(type=Users::class)
+   *  ))
+   *    @OA\Response(
+   *        response=401, description="UNAUTHORIZED - JWT Token not found | Expired JWT Token | Invalid JWT Token" 
+   * )
+   *    @OA\Response(
+   *        response=404, description="Page Not found" 
+   * )
+   * @Entity("user", expr="repository.find(user_id)")
+   * @Entity("customer", expr="repository.find(id)")
+   */
+    public function getUserCustomerId(Users $user, 
+    Customers $customer, 
     SerializerInterface $serializer )
     {
   
@@ -69,51 +106,92 @@ class UserController extends AbstractController {
     }
 
 
-    /**    
-     * ajouter un nouvel utilisateur lié à un client ;
+    /**   
+     * User add
+     *  
      * @Route("/api/customers/{id}/users", name="api_user_create", methods={"POST"})
+     * 
+     * @OA\Post(
+     *      path="/api/customers/{id}/users",
+     *      description="Ajouter un nouvel utilisateur lié à un client",
+     *      ),
+     *      @OA\Response(
+     *          response="201", description="OK - Success user is add"
+     *      ),
+     *      @OA\Response(
+     *          response="401", description="UNAUTHORIZED - JWT Token not found | Expired JWT Token | Invalid JWT Token")
+     * )
+     *      @OA\Response(
+     *          response=404, description="Page Not found" 
+     * )
+     * 
+     * 
      * @param Request $request
      * @param EntityManagerInterface $em
      * @param SerializerInterface $serializer
      * @param ValidatorInterface $validator
-     * @return JsonResponse
+     * @param Customers $customer
+     * @return Response
      */
     public function create(Request $request, 
     EntityManagerInterface $em, 
     SerializerInterface $serializer, 
-    ValidatorInterface $validator) : JsonResponse
+    ValidatorInterface $validator, Customers $customer) : Response
     {
-        $user = $serializer->deserialize($request->getContent(), User::class, 'json');
+        $user = $serializer->deserialize($request->getContent(), Users::class, 'json');
         $errors = $validator->validate($user);
 
         if(count($errors) > 0) {
             $data = $serializer->serialize($errors, 'json');
-            return new JsonResponse($data, 400, [], true);
+            return new Response($data, 400, [], true);
         }
-dd($user);
-        $user->setEmail($email)
-             ->setFullname($Fullname);
         
+        $customer->addUser($user);
+
         $em->persist($user);
         $em->flush();
 
         $data = $serializer->serialize($user, 'json', SerializationContext::create()->setGroups(array('create')));
-        return new JsonResponse($data, Response::HTTP_CREATED, [], true);
+
+        $response = new Response($data, Response::HTTP_CREATED);
+        $response->headers->set('Content-Type', 'application/json');
+  
+        return $response;
     }
 
     /**
-     * supprimer un utilisateur ajouté par un client.
+     * User remove
+     * 
      * @Route("/api/customers/{id}/users/{user_id}",name="delete", methods={"DELETE"})
-     * @param Users $user
-     * @param EntityManagerInterface $manager
-     * @return JsonResponse
+
+     * @OA\Post(
+     *      path="/api/customers/{id}/users/{user_id}",
+     *      description="Supprimer un utilisateur ajouté par un client"
+     *      ),
+     *      @OA\Response(
+     *          response="201", description="OK - Success user is remove"
+     *      ),
+     *      @OA\Response(
+     *          response="401", description="UNAUTHORIZED - JWT Token not found | Expired JWT Token | Invalid JWT Token")
+     * )
+     *      @OA\Response(
+     *          response=404, description="Page Not found" 
+     * )
+     * 
+     * @Entity("user", expr="repository.find(user_id)")
+     * @Entity("customer", expr="repository.find(id)")
      */
     public function deleteUserCustomer(Users $user, 
-    EntityManagerInterface $em) : JsonResponse
+    EntityManagerInterface $em, 
+    Customers $customer)
     {
         $em->remove($user);
         $em->flush();
-        return new JsonResponse(null, Response::HTTP_NO_CONTENT);
+        
+        return new Response($user);
+        $response->headers->set('Content-Type', 'application/json');
+
+        return $response; 
 
     }
 }

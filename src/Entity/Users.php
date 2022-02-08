@@ -26,19 +26,15 @@ use Symfony\Component\Validator\Constraints as Assert;
  *          "self",
  *          href = @Hateoas\Route(
  *          "api_user_show_id",
- *          parameters = {"user_id" = "expr(object.getId())" },
+ *          parameters = {"user_id" = "expr(object.getId())", "id" = "expr(object.getCustomers().getId())" },
  *          absolute = true,
  * ))
- * 
- * @Hateoas\Relation(
- *          "customers",
- *          embedded = @Hateoas\Embedded("expr(object.getCustomers())"
- * ))
- * 
+ 
  * @Hateoas\Relation(
  *          "create",
  *          href = @Hateoas\Route(
  *          "api_user_create",
+ *          parameters = {"id" = "expr(object.getCustomers().getId())" },
  *          absolute = true
  * ))
  * 
@@ -46,7 +42,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *          "delete", 
 *           href = @Hateoas\Route( 
  *          "delete", 
- *          parameters = { "id" = "expr(object.getId())" }, 
+ *          parameters = {"user_id" = "expr(object.getId())", "id" = "expr(object.getCustomers().getId())" },
  *          absolute = true         
  * )) 
  */
@@ -65,8 +61,10 @@ class Users
      * @Serializer\Groups({"listUser", "create"})
      * @Serializer\Since("1.0")
      * @ORM\Column(type="string", length=255)
-     * @Assert\Length(min = 3, max = 25
-     * )
+     * @Assert\Length(min = 3, max = 25, minMessage="Le nom d'utilisateur doit avoir au moins 3 caractères",)
+     * @Assert\Regex(
+     *      "#^[a-zA-Z0-9._-]+$#", 
+     *      message="Le nom d'utilisateur ne peut comporter que des caractères alphanumériques, points, tirets et underscores")
      */
     private $name;
 

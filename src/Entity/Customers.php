@@ -36,6 +36,10 @@ class Customers implements UserInterface, PasswordAuthenticatedUserInterface
      * @Serializer\Groups({"listUser"})
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank
+     * @Assert\Length(min = 3, max = 25, minMessage="Le nom d'utilisateur doit avoir au moins 3 caractères",)
+     * @Assert\Regex(
+     *      "#^[a-zA-Z0-9._-]+$#", 
+     *      message="Le nom d'utilisateur ne peut comporter que des caractères alphanumériques, points, tirets et underscores")
      * @Serializer\Since("1.0")
      */
     private $fullname;
