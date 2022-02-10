@@ -52,6 +52,7 @@ class Products
     private $model;
 
     /**
+     * @Serializer\Groups({"listProduct"})
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank
      * @Serializer\Since("1.0")
@@ -59,6 +60,7 @@ class Products
     private $color;
 
     /**
+     * @Serializer\Groups({"listProduct"})
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank
      * @Serializer\Since("1.0")
@@ -66,6 +68,7 @@ class Products
     private $capacity;
 
     /**
+     * @Serializer\Groups({"listProduct"})
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank
      * @Serializer\Since("1.0")
@@ -73,7 +76,7 @@ class Products
     private $price;
 
     /**
-     *  @Serializer\Groups({"listProduct"})
+     * @Serializer\Groups({"listProduct"})
      * @ORM\Column(type="text")
      * @Assert\NotBlank
      * @Serializer\Since("1.0")
@@ -81,6 +84,7 @@ class Products
     private $description;
 
     /**
+     * @Serializer\Groups({"listProduct"})
      * @ORM\ManyToMany(targetEntity=Users::class, inversedBy="products")
      * @Serializer\Since("1.0")
      */

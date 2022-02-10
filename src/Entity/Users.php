@@ -58,7 +58,7 @@ class Users
     private $id;
 
     /**
-     * @Serializer\Groups({"listUser", "create"})
+     * @Serializer\Groups({"listUser", "create", "listProduct"})
      * @Serializer\Since("1.0")
      * @ORM\Column(type="string", length=255)
      * @Assert\Length(min = 3, max = 25, minMessage="Le nom d'utilisateur doit avoir au moins 3 caractères",)
@@ -84,6 +84,8 @@ class Users
     private $customers;
 
     /**
+     *      
+     * @Serializer\Groups({"listUser"})
      * @ORM\ManyToMany(targetEntity=Products::class, mappedBy="users")
      * @Serializer\Since("1.0")
      */

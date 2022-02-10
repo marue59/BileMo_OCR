@@ -5,25 +5,25 @@ namespace App\Controller;
 use App\Entity\Users;
 use App\Entity\Customers;
 use App\Pagination\Pagination;
+use OpenApi\Annotations as OA;
 use App\Repository\UsersRepository;
 use App\Repository\CustomersRepository;
 use JMS\Serializer\SerializerInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use JMS\Serializer\SerializationContext;
+use Nelmio\ApiDocBundle\Annotation\Model;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\User\User;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
+use Nelmio\ApiDocBundle\Annotation\Security as OASecurity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Nelmio\ApiDocBundle\Annotation\Model;
-use OpenApi\Annotations as OA;
-use Nelmio\ApiDocBundle\Annotation\Security as OASecurity;
 
 /**
  * Class UserController
@@ -41,25 +41,32 @@ class UserController extends AbstractController {
    * 
    * @OA\Get(
    *      path="/api/customers/{id}/users",
-   *      description="Consulter la liste des Users"
-   * )
-   *    @OA\Response(
-   *        response=200, description="Returns users list from customers",
-   *        @Model(type=Users::class, groups={"listUser"}))
+   *      description="Consulter la liste des Users",
+   *            @OA\Parameter(
+   *              name="id", in="path", description="Id customer", required=true,
+   *              @OA\Schema(type="integer")
+   *            ),
+   *            @OA\Response(
+   *                response=200, description="Returns users list from customers",
+   *                @Model(type=Users::class, groups={"listUser"}))
    *  ))
-   *    @OA\Response(
-   *        response=401, description="UNAUTHORIZED - JWT Token not found | Expired JWT Token | Invalid JWT Token" 
+   *            @OA\Response(
+   *                response=401, description="UNAUTHORIZED - JWT Token not found | Expired JWT Token | Invalid JWT Token" 
    * )
-   *    @OA\Response(
-   *        response=404, description="Page Not found" 
+   *            @OA\Response(
+   *                response=404, description="Page Not found" 
    * )
    * 
    */
   public function getUsersCustomer(UsersRepository $userRepository, 
   Pagination $pagination, 
-  SerializerInterface $serializer )
+  SerializerInterface $serializer, Customers $customer )
   {
-      $query = $userRepository->createQueryBuilder('u')->getQuery();
+      $query = $userRepository->createQueryBuilder('u')
+                            ->where('u.customers=:customer')
+                            ->setParameter('customer', $customer)
+                            ->getQuery();
+                            
       $data = $pagination->create($query);
 
       $data = $serializer->serialize($data, 'json', SerializationContext::create()->setGroups(array('listUser')));
@@ -89,6 +96,7 @@ class UserController extends AbstractController {
    *    @OA\Response(
    *        response=404, description="Page Not found" 
    * )
+   * 
    * @Entity("user", expr="repository.find(user_id)")
    * @Entity("customer", expr="repository.find(id)")
    */
@@ -96,7 +104,11 @@ class UserController extends AbstractController {
     Customers $customer, 
     SerializerInterface $serializer )
     {
-  
+      if(!$customer->getUsers()->contains($user))
+      {
+        throw $this->createAccessDeniedException();
+      }
+
       $data = $serializer->serialize($user, 'json');
 
       $response = new Response($data);
@@ -185,10 +197,14 @@ class UserController extends AbstractController {
     EntityManagerInterface $em, 
     Customers $customer)
     {
+        if(!$customer->getUsers()->contains($user))
+        {
+          throw $this->createAccessDeniedException();
+        }
         $em->remove($user);
         $em->flush();
         
-        return new Response($user);
+        return new Response();
         $response->headers->set('Content-Type', 'application/json');
 
         return $response; 

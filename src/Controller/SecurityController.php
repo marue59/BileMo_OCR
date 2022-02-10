@@ -10,7 +10,7 @@ use OpenApi\Annotations as OA;
 class SecurityController extends AbstractController {
     
     /**
-     * Authentication
+     * Authentification
      * 
      * @OA\Post(
      *      path="/api/login_check",

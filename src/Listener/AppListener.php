@@ -19,7 +19,6 @@ class AppListerner implements EventSubscriberInterface
     {
         return [
             KernelEvents::REQUEST => 'onRequest',
-            KernelEvents::EXCEPTION => 'onException'
         ];
     }
 
@@ -36,30 +35,4 @@ class AppListerner implements EventSubscriberInterface
         }
     }
 
-    public function onException(ExceptionEvent $event)
-    {
-        $response = new JsonResponse();
-
-        $exception = $event->getThrowable();
-
-        switch ($exception) {
-            case $exception instanceof NotFoundHttpException:
-                $response->setStatusCode(Response::HTTP_NOT_FOUND);
-                $response->setData('Resource not found');
-                break;
-            case $exception instanceof AccessDeniedException:
-                $response->setStatusCode(Response::HTTP_FORBIDDEN);
-                break;
-            case $exception instanceof InvalidArgumentException:
-                $response->setStatusCode($exception->getCode());
-                $response->setData($exception->getMessage());
-                break;
-            default:
-                $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
-                $response->setData('Server error');
-            break;
-        }
-
-        $event->setResponse($response);
-    }
 }

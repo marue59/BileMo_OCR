@@ -8,6 +8,7 @@ Symfony 5.4
 LexikJWTAuthenticationBundle "^2.14"
 JMSSerializerBundle "^4.0"
 HateoasBundle "^2.4"
+Nelmio/api-doc-bundle "^4.8"
 
 Composer "1.11.99.4"
 PHP "7.2.5"
@@ -59,4 +60,4 @@ You can test the API with this customer account, already available:
 }
 
 DOCUMENTATION
-The documentation in JSON format is available at the following link:
+The documentation in JSON format is available at the following link: api/doc

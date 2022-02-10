@@ -4,17 +4,17 @@ namespace App\Controller;
 
 use App\Entity\Products;
 use App\Pagination\Pagination;
+use OpenApi\Annotations as OA;
 use App\Repository\ProductsRepository;
 use JMS\Serializer\SerializerInterface;
 use JMS\Serializer\SerializationContext;
+use Nelmio\ApiDocBundle\Annotation\Model;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Nelmio\ApiDocBundle\Annotation\Security as OASecurity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use OpenApi\Annotations as OA;
-use Nelmio\ApiDocBundle\Annotation\Model;
-use Nelmio\ApiDocBundle\Annotation\Security as OASecurity;
 
 /**
  * Class ProductController
@@ -68,8 +68,11 @@ class ProductController extends AbstractController {
    * 
    * @OA\Get(
    *      path="/api/products/{id}",
-   *      description="Consulter les détails d’un produit BileMo ;"
-   * )
+   *      description="Consulter les détails d’un produit BileMo",
+   *      @OA\Parameter(
+   *          name="id", in="path", description="Id product", required=true,
+   *          @OA\Schema(type="integer")
+   *      ),
    * 
    *      @OA\Response(
    *         response=200, description="Returns product detail",
@@ -82,7 +85,6 @@ class ProductController extends AbstractController {
    *        response=404, description="Page Not found" 
    * )
    * 
-   * 
    */
     public function getProductId(Products $product, SerializerInterface $serializer): Response
     {
@@ -94,5 +96,4 @@ class ProductController extends AbstractController {
         return $response;
     }
 }
-
 ?>

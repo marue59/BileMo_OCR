@@ -1,0 +1,61 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+            <meta charset="UTF-8">
+        <title>My App</title>
+
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/nelmio/NelmioApiDocBundle/Resources/public/swagger-ui/swagger-ui.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/nelmio/NelmioApiDocBundle/Resources/public/style.css">
+    
+                    <script id="swagger-data" type="application/json">{"spec":{"openapi":"3.0.0","info":{"title":"My App","description":"This is an awesome app!","version":"1.0.0"},"paths":{"/api/products":{"get":{"tags":["Product"],"summary":"Products list","description":"Consulter la liste des produits BileMo","operationId":"get_product_show","responses":{"200":{"description":"Returns products list","content":{"application/json":{"schema":{"$ref":"#/components/schemas/Products"}}}},"401":{"description":"UNAUTHORIZED - JWT Token not found | Expired JWT Token | Invalid JWT Token"},"404":{"description":"Page Not found"}},"security":[{"Bearer":[]}]}},"/api/products/{id}":{"get":{"tags":["Product"],"summary":"Product detail","description":"Consulter les d\u00e9tails d\u2019un produit BileMo ;","operationId":"get_product_detail","parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"string"}}],"responses":{"200":{"description":"Returns product detail","content":{"application/json":{"schema":{"$ref":"#/components/schemas/Products2"}}}},"401":{"description":"UNAUTHORIZED - JWT Token not found | Expired JWT Token | Invalid JWT Token"},"404":{"description":"Page Not found"}},"security":[{"Bearer":[]}]}},"/api/login_check":{"post":{"tags":["Login"],"summary":"Authentication","description":"Ask for an authentication token","operationId":null,"requestBody":{"required":true,"content":{"application/json":{"schema":{"required":["username","password"],"properties":{"username":{"type":"string","example":"customers0@email.com"},"password":{"type":"string","example":"password"}},"type":"object"}}}},"responses":{"200":{"description":"OK - Success","content":{"application/json":{"schema":{"properties":{"token":{"type":"string","example":"eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE2MzI4NDI2NTgsImV4cCI6MTYzMjg0NjI1OCwicm9sZXMiOlsiUk9MRV9DVVNUT01FUiJdLCJ1c2VybmFtZSI6IlBzYUZyYW5jZSJ9.lpgfnOpZQ13Q-HtOCqtRdD8ChcI3NlWpTsiK9Ff6LlXiC7ih89tvxyPgj5xKeYFQQZlLS7838ukT_QnWdjbyEmG8NvZD5mD-jmMKBTGaEGMiVs8c0J7OcrFb_duKe8-9cmho3j1DvODzVXOqDTYL3J-C-2Qg0bW4RzCT1rVxgvAcFGHG5MbpFyvwft96V-ZablsmTE_7a3rkFnc8mvcWW4ivVr2UDKxcZKa9dQWXO72KMKF7-7eXEFmJSSXfRc9kUo-rXA9IWnJ9upzXWQeDP-0Ccgmzl6ukMzowUS2NsYwaHq7cmhB4wCTqTA8ubgpjYWbZiTxts0rbOjY5KW_0plB7VPrIarBSmi4rmjK0RJ68-MDrofpyMGy32S_TnBM0xN4cNqozxL0Rx9OxvyYnaxxSZ8NFOFQfABAevulCCG68jhXcEA6qknJ6OXVD3zESbFNYbkvt8iO48CuUXoRVb7Xv-mokrJW9CQpA7Aiz2M7vXYbEAIfux012Y_ZnTfDPseikYYT8xKFEGOFZ-oeejx15y7GbF5VLhV-IEisYC7Z7rTdsaa6OXt7sfJ1Ux9Y98bksWqncgOBddUwbGC9-r2cWF2V0C8-zcjHsfNfP5jttHgpbsEMguguX_al6QARYRnUu3_CrGqgQD2mh8EO4AX3EaswfuV-6IldyL7z3A7A"}},"type":"object"}}}},"401":{"description":"UNAUTHORIZED - JWT Token not found | Expired JWT Token | Invalid JWT Token"}},"security":[]}},"/api/customers/{id}/users":{"get":{"tags":["User"],"summary":"Users list","description":"Consulter la liste des Users","operationId":"get_api_user_show","parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"string"}}],"responses":{"200":{"description":"Returns users list from customers","content":{"application/json":{"schema":{"$ref":"#/components/schemas/Users"}}}},"401":{"description":"UNAUTHORIZED - JWT Token not found | Expired JWT Token | Invalid JWT Token"},"404":{"description":"Page Not found"}},"security":[{"Bearer":[]}]},"post":{"tags":["User"],"summary":"User add","description":"Ajouter un nouvel utilisateur li\u00e9 \u00e0 un client","operationId":"post_api_user_create","parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"string"}}],"responses":{"201":{"description":"OK - Success user is add"},"401":{"description":"UNAUTHORIZED - JWT Token not found | Expired JWT Token | Invalid JWT Token"},"404":{"description":"Page Not found"}},"security":[{"Bearer":[]}]}},"/api/customers/{id}/users/{user_id}":{"get":{"tags":["User"],"summary":"User detail","description":"Consulter le d\u00e9tail d\u2019un user inscrit li\u00e9 \u00e0 un customer ","operationId":"get_api_user_show_id","parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"string"}},{"name":"user_id","in":"path","required":true,"schema":{"type":"string"}}],"responses":{"200":{"description":"Returns users detail from customers","content":{"application/json":{"schema":{"$ref":"#/components/schemas/Users2"}}}},"401":{"description":"UNAUTHORIZED - JWT Token not found | Expired JWT Token | Invalid JWT Token"},"404":{"description":"Page Not found"}},"security":[{"Bearer":[]}]},"delete":{"tags":["User"],"summary":"User remove","operationId":"delete_delete","parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"string"}},{"name":"user_id","in":"path","required":true,"schema":{"type":"string"}}],"responses":{"201":{"description":"OK - Success user is remove"},"401":{"description":"UNAUTHORIZED - JWT Token not found | Expired JWT Token | Invalid JWT Token"},"404":{"description":"Page Not found"}},"security":[{"Bearer":[]}]}},"/api/doc.json":{"get":{"operationId":null,"responses":{"default":{"description":""}}}}},"components":{"schemas":{"Products":{"required":["brand","model","description"],"properties":{"id":{"type":"integer"},"brand":{"type":"string"},"model":{"type":"string"},"description":{"type":"string"}},"type":"object"},"Products2":{"required":["brand","model","color","capacity","price","description"],"properties":{"id":{"type":"integer"},"brand":{"type":"string"},"model":{"type":"string"},"color":{"type":"string"},"capacity":{"type":"string"},"price":{"type":"string"},"description":{"type":"string"},"users":{"type":"array","items":{"$ref":"#/components/schemas/Users2"}},"_links":{"properties":{"self":{"properties":{"href":{"type":"string"}},"type":"object"}},"readOnly":true}},"type":"object"},"Users":{"required":["email"],"properties":{"id":{"type":"integer"},"name":{"type":"string","maxLength":25,"minLength":3,"pattern":"[a-zA-Z0-9._-]+"},"email":{"type":"string"},"customers":{"$ref":"#/components/schemas/Customers"}},"type":"object"},"Users2":{"required":["email"],"properties":{"id":{"type":"integer"},"name":{"type":"string","maxLength":25,"minLength":3,"pattern":"[a-zA-Z0-9._-]+"},"email":{"type":"string"},"customers":{"$ref":"#/components/schemas/Customers2"},"products":{"type":"array","items":{"$ref":"#/components/schemas/Products2"}},"_links":{"properties":{"show":{"properties":{"href":{"type":"string"}},"type":"object"},"self":{"properties":{"href":{"type":"string"}},"type":"object"},"create":{"properties":{"href":{"type":"string"}},"type":"object"},"delete":{"properties":{"href":{"type":"string"}},"type":"object"}},"readOnly":true}},"type":"object"},"Customers":{"required":["fullname"],"properties":{"fullname":{"type":"string","maxLength":25,"minLength":3,"pattern":"[a-zA-Z0-9._-]+"}},"type":"object"},"Customers2":{"required":["fullname","email"],"properties":{"id":{"type":"integer"},"fullname":{"type":"string","maxLength":25,"minLength":3,"pattern":"[a-zA-Z0-9._-]+"},"email":{"type":"string"},"password":{"title":"The hashed password","type":"string"},"users":{"type":"array","items":{"$ref":"#/components/schemas/Users2"}},"_embedded":{"properties":{"api_user_show":{"type":"object"}},"readOnly":true}},"type":"object"}}}}}</script>
+    </head>
+<body>
+            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="position:absolute;width:0;height:0">
+            <defs>
+                <symbol viewBox="0 0 20 20" id="unlocked">
+                    <path d="M15.8 8H14V5.6C14 2.703 12.665 1 10 1 7.334 1 6 2.703 6 5.6V6h2v-.801C8 3.754 8.797 3 10 3c1.203 0 2 .754 2 2.199V8H4c-.553 0-1 .646-1 1.199V17c0 .549.428 1.139.951 1.307l1.197.387C5.672 18.861 6.55 19 7.1 19h5.8c.549 0 1.428-.139 1.951-.307l1.196-.387c.524-.167.953-.757.953-1.306V9.199C17 8.646 16.352 8 15.8 8z"></path>
+                </symbol>
+                <symbol viewBox="0 0 20 20" id="locked">
+                    <path d="M15.8 8H14V5.6C14 2.703 12.665 1 10 1 7.334 1 6 2.703 6 5.6V8H4c-.553 0-1 .646-1 1.199V17c0 .549.428 1.139.951 1.307l1.197.387C5.672 18.861 6.55 19 7.1 19h5.8c.549 0 1.428-.139 1.951-.307l1.196-.387c.524-.167.953-.757.953-1.306V9.199C17 8.646 16.352 8 15.8 8zM12 8H8V5.199C8 3.754 8.797 3 10 3c1.203 0 2 .754 2 2.199V8z"></path>
+                </symbol>
+                <symbol viewBox="0 0 20 20" id="close">
+                    <path d="M14.348 14.849c-.469.469-1.229.469-1.697 0L10 11.819l-2.651 3.029c-.469.469-1.229.469-1.697 0-.469-.469-.469-1.229 0-1.697l2.758-3.15-2.759-3.152c-.469-.469-.469-1.228 0-1.697.469-.469 1.228-.469 1.697 0L10 8.183l2.651-3.031c.469-.469 1.228-.469 1.697 0 .469.469.469 1.229 0 1.697l-2.758 3.152 2.758 3.15c.469.469.469 1.229 0 1.698z"></path>
+                </symbol>
+                <symbol viewBox="0 0 20 20" id="large-arrow">
+                    <path d="M13.25 10L6.109 2.58c-.268-.27-.268-.707 0-.979.268-.27.701-.27.969 0l7.83 7.908c.268.271.268.709 0 .979l-7.83 7.908c-.268.271-.701.27-.969 0-.268-.269-.268-.707 0-.979L13.25 10z"></path>
+                </symbol>
+                <symbol viewBox="0 0 20 20" id="large-arrow-down">
+                    <path d="M17.418 6.109c.272-.268.709-.268.979 0s.271.701 0 .969l-7.908 7.83c-.27.268-.707.268-.979 0l-7.908-7.83c-.27-.268-.27-.701 0-.969.271-.268.709-.268.979 0L10 13.25l7.418-7.141z"></path>
+                </symbol>
+                <symbol viewBox="0 0 24 24" id="jump-to">
+                    <path d="M19 7v4H5.83l3.58-3.59L8 6l-6 6 6 6 1.41-1.41L5.83 13H21V7z"></path>
+                </symbol>
+                <symbol viewBox="0 0 24 24" id="expand">
+                    <path d="M10 18h4v-2h-4v2zM3 6v2h18V6H3zm3 7h12v-2H6v2z"></path>
+                </symbol>
+            </defs>
+        </svg>
+        
+            <header>
+                            <a id="logo" href="https://github.com/nelmio/NelmioApiDocBundle">
+                    <img src="https://cdn.jsdelivr.net/gh/nelmio/NelmioApiDocBundle/Resources/public/logo.png" alt="NelmioApiDocBundle">
+                </a>
+                    </header>
+    
+            <div id="swagger-ui" class="api-platform"></div>
+    
+            <script src="https://cdn.jsdelivr.net/gh/nelmio/NelmioApiDocBundle/Resources/public/swagger-ui/swagger-ui-bundle.js"></script>
+        <script src="https://cdn.jsdelivr.net/gh/nelmio/NelmioApiDocBundle/Resources/public/swagger-ui/swagger-ui-standalone-preset.js"></script>
+    
+    <script src="https://cdn.jsdelivr.net/gh/nelmio/NelmioApiDocBundle/Resources/public/init-swagger-ui.js"></script>
+
+            <script type="text/javascript">
+            (function () {
+                var swaggerUI = [];
+                window.onload = loadSwaggerUI(swaggerUI);
+            })();
+        </script>
+    </body>
+</html>
+
