@@ -2,55 +2,91 @@
 
 namespace App\Entity;
 
-use App\Repository\ProductsRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use Hateoas\Configuration\Annotation as Hateoas;
+use App\Entity\Users;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\ProductsRepository;
+use Doctrine\Common\Collections\Collection;
+use JMS\Serializer\Annotation as Serializer;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * @ORM\Entity(repositoryClass=ProductsRepository::class)
+ * 
+ * @Hateoas\Relation(
+ *          "self",
+ *          href = @Hateoas\Route(
+ *          "product_detail",
+ *          parameters = {"id" = "expr(object.getId())" },
+ *          absolute = true
+ * ))
+ *
  */
 class Products
 {
     /**
+     * @Serializer\Groups({"listProduct"})
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Serializer\Since("1.0")
      */
     private $id;
 
     /**
+     * @Serializer\Groups({"listProduct"})
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
+     * @Serializer\Since("1.0")
      */
     private $brand;
 
-    /**
+    /** 
+     * @Serializer\Groups({"listProduct"})
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
+     * @Serializer\Since("1.0")
      */
     private $model;
 
     /**
+     * @Serializer\Groups({"listProduct"})
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
+     * @Serializer\Since("1.0")
      */
     private $color;
 
     /**
+     * @Serializer\Groups({"listProduct"})
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
+     * @Serializer\Since("1.0")
      */
     private $capacity;
 
     /**
+     * @Serializer\Groups({"listProduct"})
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
+     * @Serializer\Since("1.0")
      */
     private $price;
 
     /**
+     * @Serializer\Groups({"listProduct"})
      * @ORM\Column(type="text")
+     * @Assert\NotBlank
+     * @Serializer\Since("1.0")
      */
     private $description;
 
     /**
+     * @Serializer\Groups({"listProduct"})
      * @ORM\ManyToMany(targetEntity=Users::class, inversedBy="products")
+     * @Serializer\Since("1.0")
      */
     private $users;
 

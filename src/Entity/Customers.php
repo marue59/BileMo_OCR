@@ -3,48 +3,72 @@
 namespace App\Entity;
 
 use App\Entity\Users;
+use JMS\Serializer\Annotation as Serializer;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\CustomersRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Hateoas\Configuration\Annotation as Hateoas;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=CustomersRepository::class)
+ * @Hateoas\Relation(
+ *     name = "api_user_show",
+ *     embedded = @Hateoas\Embedded(
+ *         "expr(object.getUsers())",
+ *     )
+ * )
  */
 class Customers implements UserInterface, PasswordAuthenticatedUserInterface
 {
-    /**
+    /** 
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Serializer\Since("1.0")
      */
     private $id;
 
     /**
+     * @Serializer\Groups({"listUser"})
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
+     * @Assert\Length(min = 3, max = 25, minMessage="Le nom d'utilisateur doit avoir au moins 3 caractères",)
+     * @Assert\Regex(
+     *      "#^[a-zA-Z0-9._-]+$#", 
+     *      message="Le nom d'utilisateur ne peut comporter que des caractères alphanumériques, points, tirets et underscores")
+     * @Serializer\Since("1.0")
      */
     private $fullname;
 
     /**
+     * 
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
+     * @Serializer\Since("1.0")
      */
     private $email;
 
     /**
+     * 
      * @ORM\Column(type="json")
+     * @Serializer\Since("1.0")
      */
     private $roles = [];
 
     /** 
      * @var string The hashed password
      * @ORM\Column(type="string", length=255)
+     * @Serializer\Since("1.0")
      */
     private $password;
 
     /**
      * @ORM\OneToMany(targetEntity=Users::class, mappedBy="customers")
+     * @Serializer\Since("1.0")
      */
     private $users;
 

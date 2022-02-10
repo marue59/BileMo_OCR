@@ -1,0 +1,12 @@
+fos_rest:
+  view:
+    mime_types:
+    json: ["application/json", "application/json;version=1.0"]
+  versioning:
+    enabled: true
+    resolvers:
+      media_type:
+        enabled: true
+        regex: '/(v|version)=(?P<version>[0-9\.]+)/'
+
+nelmio_api_doc: ~

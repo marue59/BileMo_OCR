@@ -2,17 +2,55 @@
 
 namespace App\Entity;
 
+
+use App\Entity\Products;
+use App\Entity\Customers;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UsersRepository;
 use Doctrine\Common\Collections\Collection;
+use JMS\Serializer\Annotation as Serializer;
 use Doctrine\Common\Collections\ArrayCollection;
+use Hateoas\Configuration\Annotation as Hateoas;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=UsersRepository::class)
+ * @Hateoas\Relation(
+ *          "show",
+ *          href = @Hateoas\Route(
+ *          "api_user_show",
+ *          parameters = {"id" = "expr(object.getId())" },
+ *          absolute = true,
+ * ))
+ * @Hateoas\Relation(
+ *          "self",
+ *          href = @Hateoas\Route(
+ *          "api_user_show_id",
+ *          parameters = {"user_id" = "expr(object.getId())", "id" = "expr(object.getCustomers().getId())" },
+ *          absolute = true,
+ * ))
+ 
+ * @Hateoas\Relation(
+ *          "create",
+ *          href = @Hateoas\Route(
+ *          "api_user_create",
+ *          parameters = {"id" = "expr(object.getCustomers().getId())" },
+ *          absolute = true
+ * ))
+ * 
+ * @Hateoas\Relation( 
+ *          "delete", 
+*           href = @Hateoas\Route( 
+ *          "delete", 
+ *          parameters = {"user_id" = "expr(object.getId())", "id" = "expr(object.getCustomers().getId())" },
+ *          absolute = true         
+ * )) 
  */
 class Users
 {
     /**
+     * @Serializer\Groups({"listUser", "create"})
+     * @Serializer\Since("1.0")
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -20,22 +58,36 @@ class Users
     private $id;
 
     /**
+     * @Serializer\Groups({"listUser", "create", "listProduct"})
+     * @Serializer\Since("1.0")
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(min = 3, max = 25, minMessage="Le nom d'utilisateur doit avoir au moins 3 caractères",)
+     * @Assert\Regex(
+     *      "#^[a-zA-Z0-9._-]+$#", 
+     *      message="Le nom d'utilisateur ne peut comporter que des caractères alphanumériques, points, tirets et underscores")
      */
     private $name;
 
     /**
+     * @Serializer\Groups({"listUser", "create"})
+     * @Serializer\Since("1.0")
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
      */
     private $email;
 
     /**
+     * @Serializer\Groups({"listUser"})
+     * @Serializer\Since("1.0")
      * @ORM\ManyToOne(targetEntity=Customers::class, inversedBy="users")
      */
     private $customers;
 
     /**
+     *      
+     * @Serializer\Groups({"listUser"})
      * @ORM\ManyToMany(targetEntity=Products::class, mappedBy="users")
+     * @Serializer\Since("1.0")
      */
     private $products;
 

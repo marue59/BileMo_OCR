@@ -1,0 +1,542 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "My App",
+        "description": "This is an awesome app!",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "\/api\/products": {
+            "get": {
+                "tags": [
+                    "Product"
+                ],
+                "summary": "Products list",
+                "description": "Consulter la liste des produits BileMo",
+                "operationId": "get_product_show",
+                "responses": {
+                    "200": {
+                        "description": "Returns products list",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "$ref": "#\/components\/schemas\/Products"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "UNAUTHORIZED - JWT Token not found | Expired JWT Token | Invalid JWT Token"
+                    },
+                    "404": {
+                        "description": "Page Not found"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "\/api\/products\/{id}": {
+            "get": {
+                "tags": [
+                    "Product"
+                ],
+                "summary": "Product detail",
+                "description": "Consulter les d\u00e9tails d\u2019un produit BileMo ;",
+                "operationId": "get_product_detail",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Returns product detail",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "$ref": "#\/components\/schemas\/Products2"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "UNAUTHORIZED - JWT Token not found | Expired JWT Token | Invalid JWT Token"
+                    },
+                    "404": {
+                        "description": "Page Not found"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "\/api\/login_check": {
+            "post": {
+                "tags": [
+                    "Login"
+                ],
+                "summary": "Authentication",
+                "description": "Ask for an authentication token",
+                "operationId": null,
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application\/json": {
+                            "schema": {
+                                "required": [
+                                    "username",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "username": {
+                                        "type": "string",
+                                        "example": "customers0@email.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "password"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK - Success",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "properties": {
+                                        "token": {
+                                            "type": "string",
+                                            "example": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE2MzI4NDI2NTgsImV4cCI6MTYzMjg0NjI1OCwicm9sZXMiOlsiUk9MRV9DVVNUT01FUiJdLCJ1c2VybmFtZSI6IlBzYUZyYW5jZSJ9.lpgfnOpZQ13Q-HtOCqtRdD8ChcI3NlWpTsiK9Ff6LlXiC7ih89tvxyPgj5xKeYFQQZlLS7838ukT_QnWdjbyEmG8NvZD5mD-jmMKBTGaEGMiVs8c0J7OcrFb_duKe8-9cmho3j1DvODzVXOqDTYL3J-C-2Qg0bW4RzCT1rVxgvAcFGHG5MbpFyvwft96V-ZablsmTE_7a3rkFnc8mvcWW4ivVr2UDKxcZKa9dQWXO72KMKF7-7eXEFmJSSXfRc9kUo-rXA9IWnJ9upzXWQeDP-0Ccgmzl6ukMzowUS2NsYwaHq7cmhB4wCTqTA8ubgpjYWbZiTxts0rbOjY5KW_0plB7VPrIarBSmi4rmjK0RJ68-MDrofpyMGy32S_TnBM0xN4cNqozxL0Rx9OxvyYnaxxSZ8NFOFQfABAevulCCG68jhXcEA6qknJ6OXVD3zESbFNYbkvt8iO48CuUXoRVb7Xv-mokrJW9CQpA7Aiz2M7vXYbEAIfux012Y_ZnTfDPseikYYT8xKFEGOFZ-oeejx15y7GbF5VLhV-IEisYC7Z7rTdsaa6OXt7sfJ1Ux9Y98bksWqncgOBddUwbGC9-r2cWF2V0C8-zcjHsfNfP5jttHgpbsEMguguX_al6QARYRnUu3_CrGqgQD2mh8EO4AX3EaswfuV-6IldyL7z3A7A"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "UNAUTHORIZED - JWT Token not found | Expired JWT Token | Invalid JWT Token"
+                    }
+                },
+                "security": []
+            }
+        },
+        "\/api\/customers\/{id}\/users": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Users list",
+                "description": "Consulter la liste des Users",
+                "operationId": "get_api_user_show",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Returns users list from customers",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "$ref": "#\/components\/schemas\/Users"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "UNAUTHORIZED - JWT Token not found | Expired JWT Token | Invalid JWT Token"
+                    },
+                    "404": {
+                        "description": "Page Not found"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "User add",
+                "description": "Ajouter un nouvel utilisateur li\u00e9 \u00e0 un client",
+                "operationId": "post_api_user_create",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "OK - Success user is add"
+                    },
+                    "401": {
+                        "description": "UNAUTHORIZED - JWT Token not found | Expired JWT Token | Invalid JWT Token"
+                    },
+                    "404": {
+                        "description": "Page Not found"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "\/api\/customers\/{id}\/users\/{user_id}": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "User detail",
+                "description": "Consulter le d\u00e9tail d\u2019un user inscrit li\u00e9 \u00e0 un customer ",
+                "operationId": "get_api_user_show_id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Returns users detail from customers",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "$ref": "#\/components\/schemas\/Users2"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "UNAUTHORIZED - JWT Token not found | Expired JWT Token | Invalid JWT Token"
+                    },
+                    "404": {
+                        "description": "Page Not found"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "User remove",
+                "operationId": "delete_delete",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "OK - Success user is remove"
+                    },
+                    "401": {
+                        "description": "UNAUTHORIZED - JWT Token not found | Expired JWT Token | Invalid JWT Token"
+                    },
+                    "404": {
+                        "description": "Page Not found"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "\/api\/doc.json": {
+            "get": {
+                "operationId": null,
+                "responses": {
+                    "default": {
+                        "description": ""
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Products": {
+                "required": [
+                    "brand",
+                    "model",
+                    "description"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "brand": {
+                        "type": "string"
+                    },
+                    "model": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "Products2": {
+                "required": [
+                    "brand",
+                    "model",
+                    "color",
+                    "capacity",
+                    "price",
+                    "description"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "brand": {
+                        "type": "string"
+                    },
+                    "model": {
+                        "type": "string"
+                    },
+                    "color": {
+                        "type": "string"
+                    },
+                    "capacity": {
+                        "type": "string"
+                    },
+                    "price": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "users": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#\/components\/schemas\/Users2"
+                        }
+                    },
+                    "_links": {
+                        "properties": {
+                            "self": {
+                                "properties": {
+                                    "href": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "readOnly": true
+                    }
+                },
+                "type": "object"
+            },
+            "Users": {
+                "required": [
+                    "email"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "name": {
+                        "type": "string",
+                        "maxLength": 25,
+                        "minLength": 3,
+                        "pattern": "[a-zA-Z0-9._-]+"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "customers": {
+                        "$ref": "#\/components\/schemas\/Customers"
+                    }
+                },
+                "type": "object"
+            },
+            "Users2": {
+                "required": [
+                    "email"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "name": {
+                        "type": "string",
+                        "maxLength": 25,
+                        "minLength": 3,
+                        "pattern": "[a-zA-Z0-9._-]+"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "customers": {
+                        "$ref": "#\/components\/schemas\/Customers2"
+                    },
+                    "products": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#\/components\/schemas\/Products2"
+                        }
+                    },
+                    "_links": {
+                        "properties": {
+                            "show": {
+                                "properties": {
+                                    "href": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            },
+                            "self": {
+                                "properties": {
+                                    "href": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            },
+                            "create": {
+                                "properties": {
+                                    "href": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            },
+                            "delete": {
+                                "properties": {
+                                    "href": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "readOnly": true
+                    }
+                },
+                "type": "object"
+            },
+            "Customers": {
+                "required": [
+                    "fullname"
+                ],
+                "properties": {
+                    "fullname": {
+                        "type": "string",
+                        "maxLength": 25,
+                        "minLength": 3,
+                        "pattern": "[a-zA-Z0-9._-]+"
+                    }
+                },
+                "type": "object"
+            },
+            "Customers2": {
+                "required": [
+                    "fullname",
+                    "email"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "fullname": {
+                        "type": "string",
+                        "maxLength": 25,
+                        "minLength": 3,
+                        "pattern": "[a-zA-Z0-9._-]+"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "password": {
+                        "title": "The hashed password",
+                        "type": "string"
+                    },
+                    "users": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#\/components\/schemas\/Users2"
+                        }
+                    },
+                    "_embedded": {
+                        "properties": {
+                            "api_user_show": {
+                                "type": "object"
+                            }
+                        },
+                        "readOnly": true
+                    }
+                },
+                "type": "object"
+            }
+        }
+    }
+}
