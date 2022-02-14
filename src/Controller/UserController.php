@@ -80,7 +80,7 @@ class UserController extends AbstractController {
    /**
    * User detail
    * 
-   * @Route("/api/customers/{id}/users/{user_id}", name="api_user_show_id" , methods={"GET"})
+   * @Route("/api/customers/{id}/users/{user_id}", name="api_user_show_id" , methods={"GET"}, requirements={"user_id"="\d+"})
    * 
    * @OA\Get(
    *      path="/api/customers/{id}/users/{user_id}",
@@ -95,6 +95,9 @@ class UserController extends AbstractController {
    * )
    *    @OA\Response(
    *        response=404, description="Page Not found" 
+   * )
+   *    @OA\Response(
+   *        response=405, description="NOT ALLOWED" 
    * )
    * 
    * @Entity("user", expr="repository.find(user_id)")
@@ -181,7 +184,7 @@ class UserController extends AbstractController {
      *      description="Supprimer un utilisateur ajouté par un client"
      *      ),
      *      @OA\Response(
-     *          response="201", description="OK - Success user is remove"
+     *          response="200", description="OK - Success user is remove"
      *      ),
      *      @OA\Response(
      *          response="401", description="UNAUTHORIZED - JWT Token not found | Expired JWT Token | Invalid JWT Token")
@@ -204,7 +207,7 @@ class UserController extends AbstractController {
         $em->remove($user);
         $em->flush();
         
-        return new Response();
+        return new Response('', 204);
         $response->headers->set('Content-Type', 'application/json');
 
         return $response; 
