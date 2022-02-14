@@ -184,7 +184,7 @@ class UserController extends AbstractController {
      *      description="Supprimer un utilisateur ajouté par un client"
      *      ),
      *      @OA\Response(
-     *          response="200", description="OK - Success user is remove"
+     *          response="204", description="OK - Success user is remove"
      *      ),
      *      @OA\Response(
      *          response="401", description="UNAUTHORIZED - JWT Token not found | Expired JWT Token | Invalid JWT Token")
